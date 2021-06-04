@@ -106,5 +106,3 @@ class TPE1:
             arreglo[i] = max_correlacion, tausol
             i = i + 1
         return arreglo
-
-    
