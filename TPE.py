@@ -88,34 +88,53 @@ class TPE:
 
         """A PARTIR DE ACA SE GENERA LA CODIFICACION DE LA FUENTE BTC Y ETH MEDIANTE HUFFMAN SEMI-ESTATICO
         EJERCICIO 2B"""
-        codBTC = ej2.get_codification(self.dataBTC, distribBTC) #obtengo el codigo de la fuente BTC
+        huffmanBTC = ej2.get_codification(self.dataBTC, distribBTC) #obtengo el codigo de la fuente BTC con huffman semi estatico
         cabeceraBTC = ej2.get_cabecera(distribBTC, len(self.dataBTC))
-        codBTC_bin = encoder.econde_sequence(codBTC)
+        huffmanBTC_bin = encoder.econde_sequence(huffmanBTC)
         #final_code = cabeceraBTC + codBTC_bin
-        print("CODIGO PARA LA FUENTE BTC:")
-        print(cabeceraBTC + "   |   " + codBTC)
-        self.save_file("codigoBTC", cabeceraBTC, codBTC_bin)
+        print("CODIGO HUFFMAN SEMI-ESTATICO PARA LA FUENTE BTC:")
+        print(cabeceraBTC + "   |   " + huffmanBTC)
+        self.save_file("huffmanBTC", huffmanBTC_bin, cabeceraBTC)
         print("\n")
         print("\n")
 
 
 
-        codETH = ej2.get_codification(self.dataETH, distribETH) #obtengo el codigo de la fuente ETH
+        huffmanETH = ej2.get_codification(self.dataETH, distribETH) #obtengo el codigo de la fuente ETH con huffman semi estatico
         cabeceraETH = ej2.get_cabecera(distribETH, len(self.dataETH))
-        codETH_bin = encoder.econde_sequence(codETH)
-        print("CODIGO PARA LA FUENTE ETH:")
-        print(cabeceraETH + "   |   " + codETH)
-        self.save_file("codigoETH", cabeceraETH, codETH_bin)
+        huffmanETH_bin = encoder.econde_sequence(huffmanETH)
+        print("CODIGO HUFFMAN SEMI-ESTATICO PARA LA FUENTE ETH:")
+        print(cabeceraETH + "   |   " + huffmanETH)
+        self.save_file("huffmanETH", huffmanETH_bin, cabeceraETH)
+        print("\n")
+        print("\n")
+
+        """A PARTIR DE ACA SE GENERA LA CODIFICACION DE LA FUENTE BTC Y ETH MEDIANTE RLC
+        EJERCICIO 2C"""
+        rlcBTC = ej2.get_RLC_coding(self.dataBTC) #obtengo el codigo de la fuente BTC con RLC
+        rlcBTC_bin = encoder.econde_sequence(rlcBTC)
+        print("CODIGO RLC PARA LA FUENTE BTC:")
+        print(rlcBTC)
+        self.save_file("rlcBTC", rlcBTC_bin)
+        print("\n")
+        print("\n")
+
+        rlcETH = ej2.get_RLC_coding(self.dataETH) #obtengo el codigo de la fuente BTC con RLC
+        rlcETH_bin = encoder.econde_sequence(rlcETH)
+        print("CODIGO RLC PARA LA FUENTE ETH:")
+        print(rlcETH)
+        self.save_file("rlcETH", rlcETH_bin)
         print("\n")
         print("\n")
 
 
 
-    def save_file(self, name, cabecera, codigo):
+    def save_file(self, name, codigo, cabecera=None):
         name += ".bin"
-        file = open(name, "w")
-        file.write(cabecera)
-        file.close()
+        if(cabecera != None):
+            file = open(name, "w")
+            file.write(cabecera)
+            file.close()
         file = open(name, "wb")
         file.write(codigo)
         file.close()

@@ -118,3 +118,25 @@ class TPE2():
             cabecera += str(cant)
     
         return cabecera
+
+    def get_RLC_coding(self, fuente):
+
+        codigo = ""
+        simb_act = int(fuente[0])
+        cant_act_simb = 1
+        i = 1
+        tam = len(fuente)
+
+        while (i < tam):
+            s = int(fuente[i])
+            if(s == simb_act):
+                cant_act_simb += 1
+            else:
+                codigo += str(simb_act) + str(cant_act_simb)
+                simb_act = s
+                cant_act_simb = 1
+            i += 1
+        
+        return codigo
+
+
