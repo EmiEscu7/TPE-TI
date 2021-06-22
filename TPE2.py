@@ -134,11 +134,11 @@ class TPE2():
                 cant_act_simb += 1
             else:
                 codigo += str(simb_act) + str(cant_act_simb)
-                cod_para_ver += " -- " + str(simb_act) + "-" + str(cant_act_simb)
+                cod_para_ver += "(" + str(simb_act) + "-" + str(cant_act_simb) + ") -- "
                 simb_act = s
                 cant_act_simb = 1
             i += 1
         
-        return [codigo, cod_para_ver]
+        return [codigo, cod_para_ver[:-3]]
 
 
