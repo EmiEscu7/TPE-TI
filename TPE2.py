@@ -122,6 +122,7 @@ class TPE2():
     def get_RLC_coding(self, fuente):
 
         codigo = ""
+        cod_para_ver = ""
         simb_act = int(fuente[0])
         cant_act_simb = 1
         i = 1
@@ -133,10 +134,11 @@ class TPE2():
                 cant_act_simb += 1
             else:
                 codigo += str(simb_act) + str(cant_act_simb)
+                cod_para_ver += " -- " + str(simb_act) + "-" + str(cant_act_simb)
                 simb_act = s
                 cant_act_simb = 1
             i += 1
         
-        return codigo
+        return [codigo, cod_para_ver]
 
 

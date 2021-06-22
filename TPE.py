@@ -111,18 +111,18 @@ class TPE:
 
         """A PARTIR DE ACA SE GENERA LA CODIFICACION DE LA FUENTE BTC Y ETH MEDIANTE RLC
         EJERCICIO 2C"""
-        rlcBTC = ej2.get_RLC_coding(self.dataBTC) #obtengo el codigo de la fuente BTC con RLC
+        [rlcBTC, rlcBTC_para_ver] = ej2.get_RLC_coding(self.dataBTC) #obtengo el codigo de la fuente BTC con RLC
         rlcBTC_bin = encoder.econde_sequence(rlcBTC)
         print("CODIGO RLC PARA LA FUENTE BTC:")
-        print(rlcBTC)
+        print(rlcBTC_para_ver)
         self.save_file("rlcBTC", rlcBTC_bin)
         print("\n")
         print("\n")
 
-        rlcETH = ej2.get_RLC_coding(self.dataETH) #obtengo el codigo de la fuente BTC con RLC
+        [rlcETH, rlcETH_para_ver] = ej2.get_RLC_coding(self.dataETH) #obtengo el codigo de la fuente BTC con RLC
         rlcETH_bin = encoder.econde_sequence(rlcETH)
         print("CODIGO RLC PARA LA FUENTE ETH:")
-        print(rlcETH)
+        print(rlcETH_para_ver)
         self.save_file("rlcETH", rlcETH_bin)
         print("\n")
         print("\n")
