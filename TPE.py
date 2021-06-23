@@ -1,5 +1,6 @@
 from TPE1 import *
 from TPE2 import *
+from TPE3 import *
 from encoder_decoder import *
 
 import random
@@ -13,6 +14,7 @@ class TPE:
 
     dataBTC = open("BTC.txt", 'r').readlines()
     dataETH = open("ETH.txt", 'r').readlines()
+    matriz_pasaje_BTC = None
 
     #def __init__(self, dataBTC, dataETH):
     #    self.dataBTC = dataBTC
@@ -26,12 +28,14 @@ class TPE:
         """A PARTIR DE ACA SE CALCULAN LAS MATRICES DE PASAJE DE BTC Y ETH.
         EJERCICIO 1A"""
         matrix = ej1.calcular_matriz_pasaje(self.dataBTC)
+        self.matriz_pasaje_BTC = matrix
         print('MATRIZ DE PASAJE BTC:')
         self.print_matrix(matrix)
         print("\n")
         print("\n")
 
         matrix = ej1.calcular_matriz_pasaje(self.dataETH)
+        self.matriz_pasaje_ETH = matrix
         print('MATRIZ DE PASAJE ETH:')
         self.print_matrix(matrix)
         print("\n")
@@ -69,6 +73,7 @@ class TPE:
         #GENERO EL OBJETO QUE RESUELVE EL EJERCICIO 2
         ej2 = TPE2()
         encoder = Encoder()
+        decoder = Decoder()
 
         """A PARTIR DE ACA SE CALCULA LA DISTRIBUCION DE PROBABILIDADES DE LA MONEDA BTC Y ETH
         EJERCICIO 2A"""
@@ -91,20 +96,31 @@ class TPE:
         huffmanBTC = ej2.get_codification(self.dataBTC, distribBTC) #obtengo el codigo de la fuente BTC con huffman semi estatico
         cabeceraBTC = ej2.get_cabecera(distribBTC, len(self.dataBTC))
         huffmanBTC_bin = encoder.econde_sequence(huffmanBTC)
+        #cabeceraBTC_bin = encoder.econde_sequence(cabeceraBTC)
+        #print(cabeceraBTC_bin)
         #final_code = cabeceraBTC + codBTC_bin
         print("CODIGO HUFFMAN SEMI-ESTATICO PARA LA FUENTE BTC:")
-        print(cabeceraBTC + "   |   " + huffmanBTC)
+        print(str(cabeceraBTC) + "   |   " + str(huffmanBTC))
         self.save_file("huffmanBTC", huffmanBTC_bin, cabeceraBTC)
         print("\n")
         print("\n")
 
 
+        """
+            DECODIFICACION DE HUFFMAN BTC
+        
+        [restored, restored_header] = decoder.decode_sequence("huffmanBTC", len(huffmanBTC), True)
+        print("CODIGO DECODIFICADO HUFFMAN SEMI-ESTATICO PARA LA FUENTE BTC:")
+        print(str(restored_header) + "   |   " + str(restored))
+        """
+
 
         huffmanETH = ej2.get_codification(self.dataETH, distribETH) #obtengo el codigo de la fuente ETH con huffman semi estatico
         cabeceraETH = ej2.get_cabecera(distribETH, len(self.dataETH))
         huffmanETH_bin = encoder.econde_sequence(huffmanETH)
+        #cabeceraETH_bin = encoder.econde_sequence(cabeceraETH)
         print("CODIGO HUFFMAN SEMI-ESTATICO PARA LA FUENTE ETH:")
-        print(cabeceraETH + "   |   " + huffmanETH)
+        print(str(cabeceraETH) + "   |   " + str(huffmanETH))
         self.save_file("huffmanETH", huffmanETH_bin, cabeceraETH)
         print("\n")
         print("\n")
@@ -126,6 +142,37 @@ class TPE:
         self.save_file("rlcETH", rlcETH_bin)
         print("\n")
         print("\n")
+
+    
+    def ejercicio3(self):
+        ej3 = TPE3()
+
+        """ A PARTIR DE ACA SE CALCULA EL CANAL ASOCIADO A LAS 2 MOENDAS.
+        EJERCICIO 3A """
+        PasajeBTC = ej3.calcularPasajeMoneda(self.dataBTC)
+        PasajeETH = ej3.calcularPasajeMoneda(self.dataETH)
+        Probs = ej3.get_probabilities(self.matriz_pasaje_BTC)
+        Canal = ej3.calcularCanal(self.dataBTC, PasajeBTC, PasajeETH, Probs)
+        print("\n")
+        print("EL CANAL ASOCIADO ES EL SIGUIENTE:")
+        self.print_matrix(Canal)
+        print("\n")
+        print("\n")
+
+
+
+        """ A PARTIR DE ACA SE CALCULAN EL RUIDO Y LA PERDIDA DEL CANAL ASOCIADO.
+        EJERCICIO 3B """
+        probsBTC = ej3.get_probabilities(self.matriz_pasaje_BTC)
+        print("\n")
+        probsETH = ej3.get_probabilities(self.matriz_pasaje_ETH)
+        ruido = ej3.get_ruido_canal(probsBTC, Canal)        
+        print("EL RUIDO DEL CANAL ASOCIADO ES: " + str(ruido))
+        print("\n")
+        print("\n")
+        prob_cond = ej3.calcularCanal(self.dataBTC, PasajeETH, PasajeBTC, Probs)
+        perdida = ej3.get_perdida_canal(probsETH, prob_cond)
+        print("LA PERDIDA DEL CANAL ASOCIADO ES: " + str(perdida))
 
 
 
@@ -166,7 +213,7 @@ test = TPE()
 
 test.ejercicio1()
 
-print("PRESS ENTER TO CONTINUE!!!")
+print("PRESS ENTER TO CONTINUE TO CODIFICATION & COMPRESSION!!!")
 while(True):
     i = input()
     if not i:
@@ -175,8 +222,18 @@ while(True):
 
 test.ejercicio2()
 
+print("PRESS ENTER TO CONTINUE TO CHANNELS!!!")
+while(True):
+    i = input()
+    if not i:
+        break
+
+
+test.ejercicio3()
+
 print("PRESS ENTER TO FINISH!!!")
 while(True):
     i = input()
     if not i:
         break
+
